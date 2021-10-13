@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import time
 from google.cloud import storage
 import os
+from flask import jsonify
 
 def make_fig(y):
     fig_verify = plt.figure(figsize=(100, 50))
