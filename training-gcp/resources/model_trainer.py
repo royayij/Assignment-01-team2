@@ -100,7 +100,7 @@ def train(train_df):
     model.add(Dense(units=nb_out, activation='sigmoid'))
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-    model.fit(seq_array, label_array, epochs=100, batch_size=200, validation_split=0.05, verbose=2,
+    model.fit(seq_array, label_array, epochs=5, batch_size=200, validation_split=0.05, verbose=2,
               callbacks=[
                   keras.callbacks.EarlyStopping(monitor='val_loss', min_delta=0, patience=10, verbose=0,
                                                 mode='min'),
