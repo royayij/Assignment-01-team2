@@ -4,3 +4,8 @@ docker build -t preprocess-db .
 docker run -p 5001:5000 -e TRAININGDB_API=http://dbAPI:5000/training-db/train_db -e TESTDB_API=http://dbAPI:5000/training-db/test_db -d --name=preprocessAPI preprocess-db
 docker build -t train-db .
 docker run -p 5002:5000 -v ./models:/usr/src/myapp/models -e PREPROCESSDB_API=http://preprocessAPI:5000/preprocessing/train_db -d --name=trainAPI train-db
+
+docker network create mynet
+docker network connect mynet dbAPI
+docker network connect mynet preprocessAPI
+docker network connect mynet trainAPI
