@@ -11,14 +11,14 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 
 
-@app.route('/training-cp/model', methods=['POST'])
-def train_models():
-    db_api = os.environ['PREPROCESSDB_API']
+@app.route('/vizualization-cp/figures', methods=['POST'])
+def make_figure():
+    db_api = os.environ['PREDICTIONDB_API']
     # Make a GET request to training db service to retrieve the training data/features.
     r = requests.get(db_api)
     j = r.json()
     df = pd.DataFrame.from_dict(j)
-    resp = model_trainer.train(df)
+    resp = figure_maker.make_fig(df)
     return resp
 
 
