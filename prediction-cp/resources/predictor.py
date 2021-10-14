@@ -19,8 +19,14 @@ def predict(test_df):
     label_array_test_last = label_array_test_last.reshape(label_array_test_last.shape[0], 1).astype(np.float32)
     model_repo = os.environ['MODEL_REPO']
     if model_repo:
-        file_path = os.path.join(model_repo, "model.h5")
-        model = load_model(file_path)
+        project_id = os.environ.get('PROJECT_ID', 'Specified environment variable is not set.')
+        model_repo = os.environ.get('MODEL_REPO', 'Specified environment variable is not set.')
+        client = storage.Client(project=project_id)
+        bucket = client.get_bucket(model_repo)
+        blob = bucket.blob('model.h5')
+        blob.download_to_filename('local_model.h5')
+        model = load_model('local_model.h5')
+
         # scores_test = model.evaluate(seq_array_test_last, label_array_test_last, verbose=2)
 
         y_pred_test = model.predict(seq_array_test_last)

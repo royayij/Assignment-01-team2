@@ -11,7 +11,8 @@ COPY . .
 # Expose the port that our app runs in
 EXPOSE 5000
 # Enviroment Variables
-ENV MODEL_REPO=/usr/src/myapp/models
+ENV PROJECT_ID=assignment1-328818
+ENV MODEL_REPO=model_repo_assignment_1
 ENV PREPROCESSDB_API=http://preprocess-db:5000/preprocessing/test_db
 # Run our App
 CMD ["python3","app.py"]
