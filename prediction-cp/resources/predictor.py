@@ -31,7 +31,9 @@ def f1_m(y_true, y_pred):
 # make prediction
 def predict(test_df):
     sequence_length = 50
+    sensor_cols = ['s' + str(i) for i in range(1, 22)]
     sequence_cols = ['setting1', 'setting2', 'setting3', 'cycle_norm']
+    sequence_cols.extend(sensor_cols)
     seq_array_test_last = [test_df[test_df['id'] == id][sequence_cols].values[-sequence_length:]
                            for id in test_df['id'].unique() if len(test_df[test_df['id'] == id]) >= sequence_length]
 
@@ -48,13 +50,12 @@ def predict(test_df):
         blob.download_to_filename('local_model.h5')
         model = load_model('local_model.h5')
 
-        # scores_test = model.evaluate(seq_array_test_last, label_array_test_last, verbose=2)
-
         y_pred_test = model.predict(seq_array_test_last)
         y_true_test = label_array_test_last
-        precision_test = precision_m(y_true_test, y_pred_test).numpy()
-        recall_test = recall_m(y_true_test, y_pred_test).numpy()
-        f1_test = f1_m(y_true_test, y_pred_test).numpy()
+
+        precision_test = str(precision_m(y_true_test, y_pred_test).numpy())
+        recall_test = str(recall_m(y_true_test, y_pred_test).numpy())
+        f1_test = str(f1_m(y_true_test, y_pred_test).numpy())
         text_out = {
             "Precision:": precision_test,
             "Recall": recall_test,
