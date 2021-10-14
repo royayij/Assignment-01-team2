@@ -32,7 +32,7 @@ def pre_process_train_db(dataset):
 
 
 def pre_process_test_db(test_df):
-    truth_df = pd.read_csv('../Dataset/PM_truth.txt', sep=" ", header=None)
+    truth_df = pd.read_csv('PM_truth.txt', sep=" ", header=None)
     truth_df.drop(truth_df.columns[[1]], axis=1, inplace=True)
     # MinMax normalization (from 0 to 1)
     test_df['cycle_norm'] = test_df['cycle']
