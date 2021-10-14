@@ -5,6 +5,27 @@ from keras.models import load_model
 import numpy as np
 from sklearn.metrics import precision_score, recall_score
 from google.cloud import storage
+from keras import backend as K
+
+
+def precision_m(y_true, y_pred):
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+    precision = true_positives / (predicted_positives + K.epsilon())
+    return precision
+
+
+def recall_m(y_true, y_pred):
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+    recall = true_positives / (possible_positives + K.epsilon())
+    return recall
+
+
+def f1_m(y_true, y_pred):
+    precision = precision_m(y_true, y_pred)
+    recall = recall_m(y_true, y_pred)
+    return 2 * ((precision * recall) / (precision + recall + K.epsilon()))
 
 
 # make prediction
@@ -30,11 +51,10 @@ def predict(test_df):
         # scores_test = model.evaluate(seq_array_test_last, label_array_test_last, verbose=2)
 
         y_pred_test = model.predict(seq_array_test_last)
-        y_classes = y_pred_test.argmax(axis=-1)
         y_true_test = label_array_test_last
-        precision_test = precision_score(y_true_test, y_classes)
-        recall_test = recall_score(y_true_test, y_classes)
-        f1_test = 2 * (precision_test * recall_test) / (precision_test + recall_test)
+        precision_test = precision_m(y_true_test, y_pred_test).numpy()
+        recall_test = recall_m(y_true_test, y_pred_test).numpy()
+        f1_test = f1_m(y_true_test, y_pred_test).numpy()
         text_out = {
             "Precision:": precision_test,
             "Recall": recall_test,
