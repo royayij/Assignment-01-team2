@@ -32,31 +32,9 @@ def pre_process_train_db(dataset):
 
 
 def pre_process_test_db(test_df):
-    truth_df = pd.read_csv('PM_truth.txt', sep=" ", header=None)
-    truth_df.drop(truth_df.columns[[1]], axis=1, inplace=True)
-    # MinMax normalization (from 0 to 1)
-    test_df['cycle_norm'] = test_df['cycle']
-    cols_normalize = test_df.columns.difference(['id', 'cycle', 'RUL', 'label1', 'label2'])
-    min_max_scaler = preprocessing.MinMaxScaler()
-    norm_test_df = pd.DataFrame(min_max_scaler.transform(test_df[cols_normalize]),
-                                columns=cols_normalize,
-                                index=test_df.index)
-    test_join_df = test_df[test_df.columns.difference(cols_normalize)].join(norm_test_df)
-    test_df = test_join_df.reindex(columns=test_df.columns)
-    test_df = test_df.reset_index(drop=True)
-
-    # We use the ground truth dataset to generate labels for the test data.
-    # generate column max for test data
-    rul = pd.DataFrame(test_df.groupby('id')['cycle'].max()).reset_index()
-    rul.columns = ['id', 'max']
-    truth_df.columns = ['more']
-    truth_df['id'] = truth_df.index + 1
-    truth_df['max'] = rul['max'] + truth_df['more']
-    truth_df.drop('more', axis=1, inplace=True)
     w1 = 30
     w0 = 15
     # generate RUL for test data
-    test_df = test_df.merge(truth_df, on=['id'], how='left')
     test_df['RUL'] = test_df['max'] - test_df['cycle']
     test_df.drop('max', axis=1, inplace=True)
 
