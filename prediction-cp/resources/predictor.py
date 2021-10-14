@@ -4,6 +4,7 @@ from flask import jsonify
 from keras.models import load_model
 import numpy as np
 from sklearn.metrics import precision_score, recall_score
+from google.cloud import storage
 
 
 # make prediction
@@ -17,10 +18,9 @@ def predict(test_df):
     y_mask = [len(test_df[test_df['id'] == id]) >= sequence_length for id in test_df['id'].unique()]
     label_array_test_last = test_df.groupby('id')['label1'].nth(-1)[y_mask].values
     label_array_test_last = label_array_test_last.reshape(label_array_test_last.shape[0], 1).astype(np.float32)
-    model_repo = os.environ['MODEL_REPO']
+    project_id = os.environ.get('PROJECT_ID', 'Specified environment variable is not set.')
+    model_repo = os.environ.get('MODEL_REPO', 'Specified environment variable is not set.')
     if model_repo:
-        project_id = os.environ.get('PROJECT_ID', 'Specified environment variable is not set.')
-        model_repo = os.environ.get('MODEL_REPO', 'Specified environment variable is not set.')
         client = storage.Client(project=project_id)
         bucket = client.get_bucket(model_repo)
         blob = bucket.blob('model.h5')
