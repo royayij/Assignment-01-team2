@@ -47,8 +47,8 @@ def acc_fig():
 def result_fig(df):
     if figure_repo:
         fig_result = plt.figure(figsize=(100, 50))
-        plt.plot(df['y_pred'], color="blue")
-        plt.plot(df['y_true'], color="green")
+        plt.plot(np.array(df['y_pred']), color="blue")
+        plt.plot(np.array(df['y_true']), color="green")
         plt.title('prediction')
         plt.ylabel('value')
         plt.xlabel('row')
