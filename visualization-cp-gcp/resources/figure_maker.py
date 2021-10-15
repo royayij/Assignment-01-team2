@@ -26,7 +26,7 @@ def acc_fig():
         history_bucket = client.get_bucket(history_repo)
         history_blob = history_bucket.blob('my_history.npy')
         history_blob.download_to_filename('my_history.npy')
-        history = np.load('my_history.npy', allow_pickle='TRUE')
+        history = np.load('my_history.npy', allow_pickle='TRUE').item()
         plt.plot(history['accuracy'])
         plt.plot(history['val_accuracy'])
         plt.title('model accuracy')
