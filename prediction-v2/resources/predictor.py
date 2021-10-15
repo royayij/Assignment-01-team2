@@ -58,7 +58,7 @@ def predict(result):
         y_true_test = result[0]
         y_classes = y_pred_test.argmax(axis=-1)
         y = {"y_pred": y_pred_test.tolist(), "y_true": y_true_test.tolist(), "y_pred_classes": y_classes.tolist()}
-        return y
+        return json.dumps(y)
     else:
         return jsonify({'message': 'MODEL_REPO cannot be found.'}), 200
 

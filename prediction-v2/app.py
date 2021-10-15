@@ -34,7 +34,7 @@ def predict_results():
     df = pd.DataFrame.from_dict(j)
     pre_result = predictor.pre_predict(df)
     result = predictor.predict(pre_result)
-    resp = Response(json.dumps(result), status=200, mimetype='application/json')
+    resp = Response(result, status=200, mimetype='application/json')
 
     return resp
 
