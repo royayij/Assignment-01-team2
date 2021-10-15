@@ -12,7 +12,8 @@ COPY . .
 EXPOSE 5000
 # Enviroment Variables
 ENV FIGURE_REPO=figure_repo_assignement_1
+ENV HISTORY_REPO=model_repo_assignment_1
 ENV PROJECT_ID=assignment1-328818
-ENV PREPROCESS_API=http://prediciton-dp:5000/preprocessing/test_db
+#ENV PREPROCESS_API=http://prediciton-dp:5000/preprocessing/test_db
 # Run our App
 CMD ["python3","app.py"]
