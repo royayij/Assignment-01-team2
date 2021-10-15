@@ -114,6 +114,7 @@ def train(train_df):
     }
     project_id = os.environ.get('PROJECT_ID', 'Specified environment variable is not set.')
     model_repo = os.environ.get('MODEL_REPO', 'Specified environment variable is not set.')
+
     if model_repo:
         # Save the model localy
         model.save('local_model.h5')
@@ -129,4 +130,4 @@ def train(train_df):
         return jsonify(text_out), 200
     else:
         model.save("model.h5")
-        return jsonify({'message': 'The model was saved locally.'}), 200
+        return jsonify({'message': 'The model and history was saved locally.'}), 200
