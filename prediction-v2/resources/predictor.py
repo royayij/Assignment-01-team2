@@ -65,9 +65,11 @@ def predict(result):
 
 def show_metrics(result):
     result = json.loads(result)
-    precision_test = str(precision_m(result['y_true'], result['y_pred']).numpy())
-    recall_test = str(recall_m(result['y_true'], result['y_pred']).numpy())
-    f1_test = str(f1_m(result['y_true'], result['y_pred']).numpy())
+    y_true = np.array(result['y_true'])
+    y_pred = np.array(result['y_pred'])
+    precision_test = str(precision_m(y_true, y_pred).numpy())
+    recall_test = str(recall_m(y_true, y_pred).numpy())
+    f1_test = str(f1_m(y_true, y_pred).numpy())
     text_out = {
         "Precision:": precision_test,
         "Recall": recall_test,
