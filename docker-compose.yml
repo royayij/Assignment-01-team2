@@ -33,7 +33,7 @@ services:
     ports:
       - "5002:5000"
   prediction_service:
-    image: royanasiri/predicapi:0.0.1
+    image: royanasiri/predictapi:0.0.1
     depends_on:
       - training_service
     environment:
