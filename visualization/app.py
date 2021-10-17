@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config["DEBUG"] = True
 
 
-@app.route('/vizualization-cp/acc-fig', methods=['POST'])
+@app.route('/vizualization-cp/acc-fig', methods=['GET'])
 def figure_acc():
     figure_maker.acc_fig()
     return render_template('index.html')
