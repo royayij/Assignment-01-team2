@@ -54,15 +54,15 @@ def result_fig(df):
         plt.xlabel('row')
         plt.legend(['predicted', 'actual data'], loc='upper left')
         if figure_repo:
-            fig_result.savefig(f"model_result_{now}.png")
+            fig_result.savefig("./static/model_result.png")
             # Save to GCS
             client = storage.Client(project=project_id)
             fig_bucket = client.get_bucket(figure_repo)
             fig_blob = fig_bucket.blob(f"model_res_{now}.png")
             # Upload the locally saved model
-            fig_blob.upload_from_filename(f"model_result_{now}.png")
+            fig_blob.upload_from_filename("./static/model_result.png")
             # Clean up
-            os.remove(f"model_result_{now}.png")
+            # os.remove(f"model_result_{now}.png")
             return jsonify({'message': "Saved the result figure to GCP bucket : " + figure_repo}), 200
         else:
             fig_result.savefig(f"model_result_{now}.png")

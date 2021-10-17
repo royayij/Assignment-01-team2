@@ -11,7 +11,7 @@ app.config["DEBUG"] = True
 @app.route('/vizualization-cp/acc-fig', methods=['GET'])
 def figure_acc():
     figure_maker.acc_fig()
-    return render_template('index.html')
+    return render_template('acc_result.html')
 
 
 
@@ -22,8 +22,8 @@ def figure_result():
     r = requests.get(db_api)
     j = r.json()
     df = pd.DataFrame.from_dict(j)
-    resp = figure_maker.result_fig(df)
-    return resp
+    figure_maker.result_fig(df)
+    return render_template('predict.html')
 
 
 app.run(host='0.0.0.0', port=5000)
