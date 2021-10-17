@@ -60,4 +60,4 @@ services:
       - "5004:5000"
 networks:
   training-pipeline:
-    driver: overlay
+
