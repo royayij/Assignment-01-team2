@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import os
 import requests
 import pandas as pd
@@ -10,13 +10,9 @@ app.config["DEBUG"] = True
 
 @app.route('/vizualization-cp/acc-fig', methods=['POST'])
 def figure_acc():
-    # db_api = os.environ['PREDICTIONDB_API']
-    # # Make a GET request to training db service to retrieve the training data/features.
-    # r = requests.get(db_api)
-    # j = r.json()
-    # df = pd.DataFrame.from_dict(j)
-    resp = figure_maker.acc_fig()
-    return resp
+    figure_maker.acc_fig()
+    return render_template('index.html')
+
 
 
 @app.route('/vizualization-cp/result-fig', methods=['POST'])
