@@ -28,12 +28,12 @@ def acc_fig():
         plt.legend(['train', 'test'], loc='upper left')
         # Save the model localy
         if figure_repo:
-            fig_acc.savefig("model_acc.png")
+            fig_acc.savefig("../static/model_acc.png")
             # Save to GCS
             fig_bucket = client.get_bucket(figure_repo)
             fig_blob = fig_bucket.blob(f"model_accu_{now}.png")
             # Upload the locally saved model
-            fig_blob.upload_from_filename("model_acc.png")
+            fig_blob.upload_from_filename("../static/model_acc.png")
             # Clean up
             # os.remove(f"model_acc_{now}.png")
             return jsonify({'message': "Saved the accuracy figure to GCP bucket : " + figure_repo}), 200
