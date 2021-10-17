@@ -15,7 +15,7 @@ def figure_acc():
 
 
 
-@app.route('/vizualization-cp/result-fig', methods=['POST'])
+@app.route('/vizualization-cp/result-fig', methods=['GET'])
 def figure_result():
     db_api = os.environ['PREDICT_API']
     # Make a GET request to training db service to retrieve the training data/features.
