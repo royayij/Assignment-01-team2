@@ -1,0 +1,68 @@
+version: '3.8'
+services:
+  trainingdb_service:
+    image: royanasiri/dbapi:0.0.1
+    environment:
+      - DB_URL=sqlite:///features.db
+    networks:
+      - training-pipeline
+    ports:
+      - "5000:5000"
+  preprocess_service:
+    image: royanasiri/preprocessapi:0.0.1
+    depends_on:
+      - trainingdb_service
+    environment:
+      - TRAININGDB_API=http://trainingdb_service:5000/training-db/train_db
+      - TESTDB_API=http://trainingdb_service:5000/training-db/test_db
+    networks:
+      - training-pipeline
+      - prediction-pipeline
+    ports:
+      - "5001:5000"
+  training_service:
+    image: royanasiri/trainapi:0.0.1
+    depends_on:
+      - preprocess_service
+    environment:
+      - PREPROCESSDB_API=http://preprocess_service:5000/preprocessing/train_db
+      - MODEL_REPO=model_repo_roya_de2021
+      - HISTORY_REPO=model_repo_roya_de2021
+      - PROJECT_ID=de2021-roya
+    networks:
+      - training-pipeline
+    ports:
+      - "5002:5000"
+  prediction_service:
+    image: royanasiri/predictapi:0.0.1
+    depends_on:
+      - training_service
+    environment:
+      - MODEL_REPO=model_repo_roya_de2021
+      - PROJECT_ID=de2021-roya
+      - PREPROCESSDB_API=http://preprocess_service:5000/preprocessing/test_db
+    networks:
+      - prediction-pipeline
+    ports:
+      - "5003:5000"
+  visualization_service:
+    image: royanasiri/visualapi:0.0.1
+    depends_on:
+      - training_service
+      - prediction_service
+    environment:
+      - PROJECT_ID=de2021-roya
+      - FIGURE_REPO=model_repo_roya_de2021
+      - HISTORY_REPO=model_repo_roya_de2021
+      - PREDICT_API=http://prediction_service:5000/prediction-cp/results
+    networks:
+      - training-pipeline
+      - prediction-pipeline
+    ports:
+      - "5004:5000"
+networks:
+  training-pipeline:
+    driver: overlay
+  prediction-pipeline:
+    driver: overlay
+
